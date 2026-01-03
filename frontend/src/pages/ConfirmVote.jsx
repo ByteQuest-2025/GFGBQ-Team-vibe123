@@ -57,7 +57,7 @@ export default function ConfirmVote() {
   useEffect(() => {
     speak(
       `Step 3 of 3. You selected ${candidate}. ` +
-      "Say confirm vote to submit, or say go back to change."
+        "Say confirm vote to submit, or say go back to change."
     );
     startListening();
 
@@ -67,8 +67,7 @@ export default function ConfirmVote() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-100 to-emerald-100
-                    px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-100 to-emerald-100 px-6 py-10">
       <section className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl px-8 py-10 text-center">
         <p className="text-sm text-gray-600 mb-2">Step 3 of 3</p>
 

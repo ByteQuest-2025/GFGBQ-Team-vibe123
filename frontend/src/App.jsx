@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AccessibilityModeSelect from "./pages/AccessibilityModeSelect";
 import Vote from "./pages/Vote";
+import ConfirmVote from "./pages/ConfirmVote"; // ✅ MISSING BEFORE
 import { AccessibilityProvider } from "./context/AccessibilityContext";
 
 function App() {
