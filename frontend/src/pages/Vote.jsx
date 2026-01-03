@@ -13,11 +13,22 @@ export default function Vote() {
   const [message, setMessage] = useState("");
   const [listening, setListening] = useState(false);
     const navigate = useNavigate();
+    const hasVoted = localStorage.getItem("hasVoted");
+
 
 
   const castVote = (name) => {
-    setSelected(name);
-    setTimeout(() => {
+  const hasVoted = localStorage.getItem("hasVoted");
+
+  if (hasVoted) {
+    alert("You have already voted!");
+    return;
+  }
+
+  localStorage.setItem("hasVoted", "true");
+  setSelected(name);
+
+  setTimeout(() => {
     navigate("/confirm");
   }, 800);
 };
