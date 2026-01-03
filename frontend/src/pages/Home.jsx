@@ -1,4 +1,9 @@
+
+import { useNavigate } from "react-router-dom";
+
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <main className="min-h-screen flex flex-col justify-center items-center px-6">
       <h1
@@ -19,20 +24,17 @@ export default function Home() {
 
       <div className="flex flex-col gap-4 w-full max-w-sm">
         <button
+          onClick={() => navigate("/vote")}
           className="bg-white text-black py-3 rounded-xl text-lg font-semibold focus:outline-none focus:ring-4 focus:ring-yellow-400"
         >
           Start Voting
         </button>
 
-        <button
-          className="border border-white py-3 rounded-xl text-lg focus:outline-none focus:ring-4 focus:ring-yellow-400"
-        >
+        <button className="border border-white py-3 rounded-xl text-lg">
           Enable Voice Mode
         </button>
 
-        <button
-          className="border border-white py-3 rounded-xl text-lg focus:outline-none focus:ring-4 focus:ring-yellow-400"
-        >
+        <button className="border border-white py-3 rounded-xl text-lg">
           High Contrast Mode
         </button>
       </div>
