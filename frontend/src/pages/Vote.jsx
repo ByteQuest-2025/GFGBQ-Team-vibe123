@@ -47,25 +47,30 @@ export default function Vote() {
   };
 
   return (
-    <main className="min-h-screen px-6 py-12 bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <main className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        <div className="w-full max-w-md flex flex-col items-center gap-6">
+
       <h2 className="text-4xl font-bold mb-8 tracking-tight" tabIndex="0">
         Cast Your Vote
       </h2>
 
       <button
         onClick={startVoiceVoting}
-        className="mb-8 px-6 py-3 rounded-full border border-green-400 text-lg hover:bg-green-500 hover:text-black transition shadow-lg"
+        className="mb-8 px-8 py-3 rounded-full border border-green-400/60
+hover:bg-green-500/10 transition-all duration-300
+focus:outline-none focus:ring-4 focus:ring-green-400/50"
         aria-label="Vote using voice"
       >
         🎤 Vote using Voice {listening && "(Listening...)"}
       </button>
 
-      <div className="grid gap-4 max-w-md">
+      <div className="flex flex-col items-center gap-5 w-full max-w-lg mx-auto">
         {candidates.map((c) => (
           <button
             key={c.id}
             onClick={() => castVote(c.name)}
-            className={`p-6 rounded-2xl text-xl border transition-all duration-300 flex justify-between items-center
+            className={`w-full min-w-[320px] max-w-lg p-6 rounded-2xl text-xl border 
+transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-400/50
               ${
                 selected === c.name
                   ? "bg-green-500 text-black scale-105 shadow-2xl"
@@ -79,10 +84,11 @@ export default function Vote() {
       </div>
 
       {message && (
-        <p className="mt-8 text-green-400 text-lg font-semibold animate-pulse" tabIndex="0">
+        <p className="mt-10 text-green-400 text-lg font-semibold animate-fade-in" tabIndex="0">
           {message}
         </p>
       )}
+       </div>
     </main>
   );
 }
