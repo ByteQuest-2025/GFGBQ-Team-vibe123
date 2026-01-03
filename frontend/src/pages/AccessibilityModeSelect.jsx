@@ -5,7 +5,7 @@ export default function AccessibilityModeSelect() {
   const navigate = useNavigate();
 
   /* ================================
-     VOICE GUIDANCE (OPTIONAL)
+     VOICE GUIDANCE
   ================================= */
   const speak = (text) => {
     if (!window.speechSynthesis) return;
@@ -19,7 +19,7 @@ export default function AccessibilityModeSelect() {
     speak(
       "Welcome to the inclusive voting system. " +
       "Please choose how you would like to vote today. " +
-      "You can use touch, keyboard, or voice assisted voting."
+      "You can change this later."
     );
   }, []);
 
@@ -27,132 +27,136 @@ export default function AccessibilityModeSelect() {
     navigate(`/vote/${mode}`);
   };
 
+  /* ================================
+     CARD COMPONENT
+  ================================= */
+  const ModeCard = ({ image, title, desc, onClick }) => (
+    <button
+      onClick={onClick}
+      className="relative h-64 rounded-2xl overflow-hidden shadow-lg
+                 transform transition hover:scale-[1.02]
+                 focus:ring-4 focus:ring-blue-400"
+    >
+      {/* Background Image */}
+      <img
+        src={image}
+        alt={title}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
+      {/* Text */}
+      <div className="relative z-10 h-full flex flex-col justify-end p-6">
+        <h2 className="text-2xl font-bold text-white mb-2">
+          {title}
+        </h2>
+        <p className="text-white text-lg leading-snug">
+          {desc}
+        </p>
+      </div>
+    </button>
+  );
+
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6"
+      className="min-h-screen px-6 py-10"
       style={{
         background:
           "linear-gradient(135deg, #E8F1FF 0%, #F4F9FF 50%, #ECFFF4 100%)",
       }}
     >
-      {/* MAIN CARD */}
-      <section className="w-full max-w-6xl bg-white rounded-3xl shadow-xl px-10 py-10">
+      <div className="max-w-7xl mx-auto space-y-10">
 
-        {/* STEP */}
-        <p className="text-sm text-gray-600 mb-2">
-          Step 1 of 3
-        </p>
+        {/* =======================
+            BOX 1: HEADER / CONTEXT
+        ======================= */}
+        {/* HEADER CARD */}
+<section className="bg-white rounded-3xl shadow-xl px-10 py-10 mb-10 text-center">
 
-        <div className="h-2 bg-gray-200 rounded-full mb-6">
-          <div className="h-2 w-1/3 bg-blue-500 rounded-full"></div>
-        </div>
+  {/* STEP */}
+  <p className="text-sm text-gray-500 mb-3">
+    Step 1 of 3
+  </p>
 
-        {/* TITLE */}
-        <h1 className="text-4xl font-bold text-center mb-3">
-          Choose How You Want to Vote
-        </h1>
+  {/* PROGRESS */}
+  <div className="h-2 bg-gray-200 rounded-full mb-8">
+    <div className="h-2 w-1/3 bg-blue-600 rounded-full"></div>
+  </div>
 
-        <p className="text-xl text-gray-600 text-center mb-10">
-          Select the option that best matches your comfort and needs.
-          <br />
-          You can change this later.
-        </p>
+  {/* TITLE */}
+  <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
+    Choose How You Want to Vote
+  </h1>
 
-        {/* OPTIONS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {/* SUBTITLE */}
+  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+    Select the option that best matches your comfort and needs.
+    You can change this later.
+  </p>
 
-          <button
-            onClick={() => selectMode("visual")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              Low Vision / Blind Voters
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Voice guidance, screen reader support, high contrast.
-            </p>
-          </button>
+</section>
 
-          <button
-            onClick={() => selectMode("motor")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              Limited Hand Movement
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Keyboard-friendly, large buttons, minimal interaction.
-            </p>
-          </button>
 
-          <button
-            onClick={() => selectMode("cognitive")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              First-Time or Assisted Thinking
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Step-by-step guidance with reassurance.
-            </p>
-          </button>
+        {/* =======================
+            BOX 2: OPTIONS GRID
+        ======================= */}
+        <section className="bg-white rounded-3xl shadow-xl px-10 py-10">
 
-          <button
-            onClick={() => selectMode("hearing")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              Hearing or Speech Difficulty
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Visual-only prompts and clear confirmations.
-            </p>
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-          <button
-            onClick={() => selectMode("senior")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              Senior Citizens
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Large text, calm colors, no scrolling.
-            </p>
-          </button>
+            <ModeCard
+              image="/accessibility/low-vision.jpg"
+              title="Low Vision / Blind"
+              desc="Voice guidance, screen reader support, high contrast."
+              onClick={() => selectMode("visual")}
+            />
 
-          <button
-            onClick={() => selectMode("standard")}
-            className="rounded-2xl p-6 text-left bg-slate-50
-                       hover:bg-slate-100 transition shadow
-                       focus:ring-4 focus:ring-blue-300"
-          >
-            <h2 className="text-2xl font-semibold mb-2">
-              Standard Voting
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Accessible defaults with optional tools.
-            </p>
-          </button>
+            <ModeCard
+              image="/accessibility/motor.jpg"
+              title="Limited Hand Movement"
+              desc="Keyboard-friendly, large buttons, minimal interaction."
+              onClick={() => selectMode("motor")}
+            />
 
-        </div>
+            <ModeCard
+              image="/accessibility/cognitive.jpg"
+              title="Assisted / Cognitive"
+              desc="Step-by-step guidance with reassurance."
+              onClick={() => selectMode("cognitive")}
+            />
 
-        {/* FOOTNOTE */}
-        <p className="mt-8 text-center text-gray-500 text-lg">
-          No personal data is stored during this step.
-        </p>
+            <ModeCard
+              image="/accessibility/hearing.jpg"
+              title="Hearing / Speech"
+              desc="Visual-only prompts and clear confirmations."
+              onClick={() => selectMode("hearing")}
+            />
 
-      </section>
+            <ModeCard
+              image="/accessibility/senior.jpg"
+              title="Senior Citizens"
+              desc="Large text, calm colors, no scrolling."
+              onClick={() => selectMode("senior")}
+            />
+
+            <ModeCard
+              image="/accessibility/standard.jpg"
+              title="Standard Voting"
+              desc="Accessible defaults with optional tools."
+              onClick={() => selectMode("standard")}
+            />
+
+          </div>
+
+          <p className="mt-10 text-center text-gray-500 text-lg">
+            No personal data is stored during this step.
+          </p>
+
+        </section>
+
+      </div>
     </div>
   );
 }
