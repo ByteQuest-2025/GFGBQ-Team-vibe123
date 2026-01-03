@@ -8,78 +8,76 @@ export default function VoteSenior() {
   const candidates = ["Candidate A", "Candidate B", "Candidate C"];
 
   /* ================================
-     SPEAK – SLOW & CALM
+     CALM VOICE
   ================================= */
   const speak = (text) => {
     if (!window.speechSynthesis) return;
-
     window.speechSynthesis.cancel();
+
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.75;
     u.pitch = 1;
     window.speechSynthesis.speak(u);
   };
 
-  /* ================================
-     INITIAL VOICE GUIDANCE
-  ================================= */
   useEffect(() => {
     speak(
-      "Step 2 of 3. Please choose the candidate you want to vote for. " +
-      "All options are on this screen. Take your time."
+      "Step 2 of 3. Please choose your candidate. " +
+      "All options are visible on this screen. " +
+      "Take your time."
     );
   }, []);
 
   const selectCandidate = (name) => {
     setSelectedCandidate(name);
-    speak(
-      `${name} selected. ` +
-      "If this is correct, press continue. " +
-      "You may also change your selection."
-    );
+    speak(`${name} selected.`);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center
-                    bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-100 px-6">
-
+    <div
+      className="min-h-screen flex items-center justify-center px-6"
+      style={{
+        background:
+          "linear-gradient(135deg, #FFF7D6 0%, #FFF1B8 50%, #FFE9A3 100%)",
+      }}
+    >
       {/* MAIN CARD */}
-      <section className="w-full max-w-5xl bg-white rounded-3xl shadow-lg
-                          px-12 py-10">
+      <section className="w-full max-w-4xl bg-[#FFFDF4]
+                          rounded-3xl shadow-xl px-10 py-8">
 
         {/* STEP */}
-        <p className="text-lg text-gray-600 mb-3">
+        <p className="text-base text-gray-600 mb-2">
           Step 2 of 3
         </p>
 
-        <div className="h-3 bg-gray-200 rounded-full mb-6">
-          <div className="h-3 w-2/3 bg-teal-400 rounded-full"></div>
+        <div className="h-2 bg-gray-200 rounded-full mb-5">
+          <div className="h-2 w-2/3 bg-amber-400 rounded-full"></div>
         </div>
 
         {/* TITLE */}
-        <h1 className="text-4xl font-semibold text-gray-800 text-center mb-4">
+        <h1 className="text-3xl font-semibold text-gray-800 text-center mb-3">
           Choose Your Candidate
         </h1>
 
         {/* SUBTEXT */}
-        <p className="text-2xl text-gray-600 text-center mb-8">
+        <p className="text-xl text-gray-600 text-center mb-6">
           Please select one option below.
           <br />
           You can change your choice before continuing.
         </p>
 
         {/* CANDIDATES */}
-        <div className="grid grid-cols-1 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-4 mb-6">
           {candidates.map((c) => (
             <button
               key={c}
               onClick={() => selectCandidate(c)}
-              className={`w-full py-6 rounded-2xl text-3xl font-medium
-                transition border-2
+              className={`w-full py-4 rounded-xl text-2xl font-medium
+                border-2 transition
                 ${
                   selectedCandidate === c
-                    ? "bg-teal-500 text-white border-teal-500"
-                    : "bg-emerald-50 text-gray-800 border-emerald-200"
+                    ? "bg-amber-500 text-white border-amber-500"
+                    : "bg-[#FFF3C4] text-gray-800 border-amber-200"
                 }`}
             >
               {c}
@@ -87,14 +85,14 @@ export default function VoteSenior() {
           ))}
         </div>
 
-        {/* CONFIRMATION */}
+        {/* CONFIRM */}
         <div className="text-center">
           {selectedCandidate ? (
             <>
-              <p className="text-2xl text-gray-700 mb-4">
+              <p className="text-xl text-gray-700 mb-3">
                 You selected:
                 <br />
-                <strong className="text-3xl text-gray-900">
+                <strong className="text-2xl text-gray-900">
                   {selectedCandidate}
                 </strong>
               </p>
@@ -105,23 +103,23 @@ export default function VoteSenior() {
                     state: { candidate: selectedCandidate },
                   })
                 }
-                className="mt-2 px-14 py-4 rounded-xl bg-emerald-600
-                           text-white text-2xl font-semibold
-                           focus:ring-4 focus:ring-emerald-300"
+                className="px-12 py-3 rounded-xl bg-amber-600
+                           text-white text-xl font-semibold
+                           focus:ring-4 focus:ring-amber-300"
               >
                 Continue
               </button>
             </>
           ) : (
-            <p className="text-xl text-gray-500">
+            <p className="text-lg text-gray-500">
               Please select a candidate to continue.
             </p>
           )}
         </div>
 
         {/* FOOTNOTE */}
-        <p className="mt-6 text-lg text-gray-500 text-center">
-          Nothing is final until you confirm your vote.
+        <p className="mt-5 text-base text-gray-500 text-center">
+          Your vote is private and secure.
         </p>
       </section>
     </div>
