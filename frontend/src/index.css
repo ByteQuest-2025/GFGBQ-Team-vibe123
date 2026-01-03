@@ -6,3 +6,11 @@
 body {
   @apply bg-black text-white;
 }
+
+/* ============================= */
+/* High Contrast Accessibility  */
+/* ============================= */
+
+* {
+  scroll-behavior: smooth;
+}
