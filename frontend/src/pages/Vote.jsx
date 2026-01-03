@@ -5,38 +5,46 @@ const candidates = [
   {
     id: 1,
     name: "Candidate A",
-    keywords: ["a", "candidate a", "first"],
+    keywords: ["candidate a", "a", "first"],
   },
   {
     id: 2,
     name: "Candidate B",
-    keywords: ["b", "candidate b", "second"],
+    keywords: ["candidate b", "b", "second"],
   },
   {
     id: 3,
     name: "Candidate C",
-    keywords: ["c", "candidate c", "third"],
+    keywords: ["candidate c", "c", "third"],
   },
 ];
 
 export default function Vote() {
   const navigate = useNavigate();
-  const spokenOnce = useRef(false);
+
+  const hasSpokenInstructions = useRef(false);
   const recognitionRef = useRef(null);
+  const listeningForCandidate = useRef(false);
 
   /* ================================
-     SPEAK FUNCTION
+     TEXT TO SPEECH
   ================================= */
-  const speak = (text) => {
+  const speak = (text, onEnd) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.85; // slower for clarity
-    window.speechSynthesis.speak(u);
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.85;
+
+    if (onEnd) {
+      utterance.onend = onEnd;
+    }
+
+    window.speechSynthesis.speak(utterance);
   };
 
   /* ================================
-     START VOICE RECOGNITION
+     START SPEECH RECOGNITION
   ================================= */
   const startListening = () => {
     const SR =
@@ -52,23 +60,44 @@ export default function Vote() {
     recognition.continuous = true;
 
     recognition.onresult = (e) => {
-      const text =
+      const transcript =
         e.results[e.results.length - 1][0].transcript.toLowerCase();
 
-      for (const c of candidates) {
-        if (c.keywords.some((k) => text.includes(k))) {
-          speak(`${c.name} selected. Moving to confirmation.`);
-          recognition.stop();
-          navigate("/confirm", {
-            state: { candidate: c.name },
-          });
-          return;
-        }
+      /* ---------- CONTROL COMMANDS ---------- */
+      if (transcript.includes("repeat")) {
+        recognition.stop();
+        hasSpokenInstructions.current = false;
+        handleInteraction();
+        return;
       }
 
-      speak(
-        "I did not understand. Please say Candidate A, Candidate B, or Candidate C."
-      );
+      if (transcript.includes("i am going to vote")) {
+        speak(
+          "Microphone enabled. Please say the candidate name.",
+          () => {
+            listeningForCandidate.current = true;
+          }
+        );
+        return;
+      }
+
+      /* ---------- CANDIDATE SELECTION ---------- */
+      if (listeningForCandidate.current) {
+        for (const c of candidates) {
+          if (c.keywords.some((k) => transcript.includes(k))) {
+            speak(`${c.name} selected. Moving to confirmation.`);
+            recognition.stop();
+            navigate("/confirm", {
+              state: { candidate: c.name },
+            });
+            return;
+          }
+        }
+
+        speak(
+          "I did not understand. Please say Candidate A, Candidate B, or Candidate C."
+        );
+      }
     };
 
     recognition.start();
@@ -78,21 +107,20 @@ export default function Vote() {
   /* ================================
      CLICK ANYWHERE HANDLER
   ================================= */
-  const handleInteraction = (e) => {
-    // Ignore candidate button clicks
-    if (e.target.closest("[data-candidate]")) return;
+  const handleInteraction = () => {
+    if (hasSpokenInstructions.current) return;
 
-    if (!spokenOnce.current) {
-      speak(
-        "Step 2 of 3. Select your candidate. " +
-          "You can say Candidate A, Candidate B, or Candidate C. " +
-          "You can also click on a large button."
-      );
+    const instructionText =
+      "Step 2 of 3. Select your candidate. " +
+      "You can say Candidate A, Candidate B, or Candidate C. " +
+      "If you are ready to vote, say I am going to vote. " +
+      "If you want to hear this again, say repeat instructions.";
+
+    speak(instructionText, () => {
       startListening();
-      spokenOnce.current = true;
-    } else {
-      speak("Please select your candidate.");
-    }
+    });
+
+    hasSpokenInstructions.current = true;
   };
 
   /* ================================
@@ -111,11 +139,8 @@ export default function Vote() {
       tabIndex={0}
       onClick={handleInteraction}
       onKeyDown={handleInteraction}
-      aria-label="Candidate selection screen for visually challenged users. Click or press any key for voice instructions."
+      aria-label="Candidate selection screen for visually challenged users. Click anywhere for voice instructions."
     >
-      {/* =========================
-          MAIN CARD
-      ========================== */}
       <section className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl px-10 py-12">
         <p className="text-base font-medium text-gray-600 mb-4">
           Step 2 of 3
@@ -129,14 +154,11 @@ export default function Vote() {
           Select Your Candidate
         </h1>
 
-        {/* =========================
-            LARGE CANDIDATE OPTIONS
-        ========================== */}
+        {/* LARGE BUTTONS FOR LOW VISION */}
         <div className="flex flex-col gap-10">
           {candidates.map((c) => (
             <button
               key={c.id}
-              data-candidate
               onClick={() =>
                 navigate("/confirm", {
                   state: { candidate: c.name },
@@ -145,8 +167,7 @@ export default function Vote() {
               className="w-full py-10 px-8 rounded-3xl
                          bg-blue-600 text-white
                          text-3xl font-bold
-                         focus:outline-none focus:ring-8 focus:ring-blue-300
-                         hover:bg-blue-700 transition"
+                         focus:outline-none focus:ring-8 focus:ring-blue-300"
               aria-label={`Select ${c.name}`}
             >
               {c.name}
@@ -155,7 +176,7 @@ export default function Vote() {
         </div>
 
         <p className="mt-12 text-lg text-gray-600 text-center">
-          You may click anywhere or speak to make your selection.
+          Click anywhere to hear instructions. You may also vote using voice.
         </p>
       </section>
     </div>
