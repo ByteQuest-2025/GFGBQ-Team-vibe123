@@ -1,19 +1,24 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import voteRoutes from "./routes/vote.routes.js";
 
-const voteRoutes = require("./routes/vote");
+dotenv.config();
+connectDB();
 
 const app = express();
-const PORT = 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/vote", voteRoutes);
 
-// Server start
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.get("/", (req, res) => {
+  res.send("Accessible Voting Backend Running");
 });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
