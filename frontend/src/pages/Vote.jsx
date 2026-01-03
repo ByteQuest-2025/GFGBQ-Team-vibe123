@@ -31,14 +31,12 @@ export default function Vote() {
   ================================= */
   const speak = (text, onEnd) => {
     if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
 
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 0.85;
 
-    if (onEnd) {
-      utterance.onend = onEnd;
-    }
+    if (onEnd) utterance.onend = onEnd;
 
     window.speechSynthesis.speak(utterance);
   };
@@ -63,7 +61,7 @@ export default function Vote() {
       const transcript =
         e.results[e.results.length - 1][0].transcript.toLowerCase();
 
-      /* ---------- CONTROL COMMANDS ---------- */
+      // Control commands
       if (transcript.includes("repeat")) {
         recognition.stop();
         hasSpokenInstructions.current = false;
@@ -81,7 +79,7 @@ export default function Vote() {
         return;
       }
 
-      /* ---------- CANDIDATE SELECTION ---------- */
+      // Candidate selection
       if (listeningForCandidate.current) {
         for (const c of candidates) {
           if (c.keywords.some((k) => transcript.includes(k))) {
@@ -139,10 +137,13 @@ export default function Vote() {
       tabIndex={0}
       onClick={handleInteraction}
       onKeyDown={handleInteraction}
-      aria-label="Candidate selection screen for visually challenged users. Click anywhere for voice instructions."
+      aria-label="Candidate selection screen. Click anywhere for voice instructions."
     >
+      {/* MAIN CONTAINER */}
       <section className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl px-10 py-12">
-        <p className="text-base font-medium text-gray-600 mb-4">
+
+        {/* STEP + PROGRESS */}
+        <p className="text-base font-medium text-gray-600 mb-3">
           Step 2 of 3
         </p>
 
@@ -150,11 +151,18 @@ export default function Vote() {
           <div className="h-3 w-2/3 bg-blue-600 rounded-full"></div>
         </div>
 
-        <h1 className="text-4xl font-bold text-center mb-10">
-          Select Your Candidate
+        {/* TITLE */}
+        <h1 className="text-4xl font-bold text-center text-gray-900 mb-4">
+          Choose Your Candidate
         </h1>
 
-        {/* LARGE BUTTONS FOR LOW VISION */}
+        {/* SUBTITLE */}
+        <p className="text-xl text-center text-gray-600 mb-14 max-w-3xl mx-auto">
+          You may select a candidate using large buttons below or vote
+          completely using voice commands.
+        </p>
+
+        {/* LARGE CANDIDATE BUTTONS */}
         <div className="flex flex-col gap-10">
           {candidates.map((c) => (
             <button
@@ -166,8 +174,9 @@ export default function Vote() {
               }
               className="w-full py-10 px-8 rounded-3xl
                          bg-blue-600 text-white
-                         text-3xl font-bold
-                         focus:outline-none focus:ring-8 focus:ring-blue-300"
+                         text-3xl font-bold tracking-wide
+                         focus:outline-none focus:ring-8 focus:ring-blue-300
+                         hover:bg-blue-700 transition"
               aria-label={`Select ${c.name}`}
             >
               {c.name}
@@ -175,8 +184,9 @@ export default function Vote() {
           ))}
         </div>
 
-        <p className="mt-12 text-lg text-gray-600 text-center">
-          Click anywhere to hear instructions. You may also vote using voice.
+        {/* FOOT NOTE */}
+        <p className="mt-14 text-lg text-gray-500 text-center">
+          Tip: Click anywhere on the screen to hear voting instructions again.
         </p>
       </section>
     </div>
