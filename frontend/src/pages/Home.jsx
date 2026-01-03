@@ -1,15 +1,25 @@
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const navigate = useNavigate();
   const [highContrast, setHighContrast] = useState(false);
 
+  useEffect(() => {
+  if (highContrast) {
+    document.body.classList.add("high-contrast");
+  } else {
+    document.body.classList.remove("high-contrast");
+  }
+}, [highContrast]);
+
+
   return (
     <main
-      className={`min-h-screen flex flex-col justify-center items-center px-6 transition-all duration-300 ${
-        highContrast ? "bg-white text-black" : "bg-gradient-to-br from-black via-gray-900 to-black text-white"
+      className={`min-h-screen flex flex-col justify-center items-center px-6 transition-all duration-300 page-transition
+ ${
+        highContrast ? "bg-black text-white" : "bg-gradient-to-br from-black via-gray-900 to-black text-white"
       }`}
     >
       <h1

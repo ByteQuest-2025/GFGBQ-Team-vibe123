@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const candidates = [
   { id: 1, name: "Candidate A" },
@@ -10,13 +12,17 @@ export default function Vote() {
   const [selected, setSelected] = useState(null);
   const [message, setMessage] = useState("");
   const [listening, setListening] = useState(false);
+    const navigate = useNavigate();
+
 
   const castVote = (name) => {
     setSelected(name);
-    setMessage(`Your vote for ${name} has been securely recorded.`);
-  };
+    setTimeout(() => {
+    navigate("/confirm");
+  }, 800);
+};
 
-  const startVoiceVoting = () => {
+const startVoiceVoting = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -47,7 +53,8 @@ export default function Vote() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <main className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-black via-gray-900 to-black text-white page-transition
+">
         <div className="w-full max-w-md flex flex-col items-center gap-6">
 
       <h2 className="text-4xl font-bold mb-8 tracking-tight" tabIndex="0">
@@ -83,11 +90,7 @@ transition-all duration-300 flex items-center justify-center focus:outline-none 
         ))}
       </div>
 
-      {message && (
-        <p className="mt-10 text-green-400 text-lg font-semibold animate-fade-in" tabIndex="0">
-          {message}
-        </p>
-      )}
+      
        </div>
     </main>
   );
