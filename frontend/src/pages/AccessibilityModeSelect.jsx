@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AccessibilityContext } from "../context/AccessibilityContext";
 
 /* ================================
-   Accessibility Modes Configuration
-================================== */
+   Accessibility Modes
+================================ */
 const modes = [
   {
     id: "vision",
@@ -63,58 +63,103 @@ const modes = [
 export default function AccessibilityModeSelect() {
   const navigate = useNavigate();
   const ctx = useContext(AccessibilityContext);
+  const hasSpokenOnce = useRef(false);
 
+  /* ================================
+     FORCE ENABLE VOICE FOR STEP 1
+  ================================= */
+  useEffect(() => {
+    if (ctx.setVoice) {
+      ctx.setVoice(true);
+    }
+  }, []);
+
+  /* ================================
+     SPEAK HELPER (SAFE)
+  ================================= */
+  const speak = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  /* ================================
+     VOICE MESSAGE
+  ================================= */
+  const instructionText =
+    "Step 1 of 3. Choose your voting experience. " +
+    "This step helps customize accessibility. " +
+    "You are not voting yet. " +
+    "Use arrow keys or tap to choose an option.";
+
+  /* ================================
+     HANDLE OPTION SELECTION
+  ================================= */
   const handleSelect = (mode) => {
     mode.setup(ctx);
+    speak(`${mode.title} selected. Moving to the next step.`);
     navigate("/vote");
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-100 to-emerald-100 px-6 py-10">
 
-      {/* =======================
-          CARD 1: STEP + HEADER
-      ======================== */}
+      {/* =========================
+          CARD 1 — STEP INFO
+      ========================== */}
       <section
         className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl
                    px-8 py-10 mb-10"
         aria-labelledby="step-heading"
       >
-        {/* Step indicator */}
         <p
           id="step-heading"
           className="text-sm font-medium text-gray-600 mb-2"
-          aria-live="polite"
         >
           Step 1 of 3
         </p>
 
-        {/* Progress bar */}
         <div
           className="h-2 w-full bg-gray-200 rounded-full mb-8"
           role="progressbar"
           aria-valuemin="0"
           aria-valuemax="100"
           aria-valuenow="33"
-          aria-label="Voting setup progress: Step 1 of 3"
+          aria-label="Voting setup progress"
         >
           <div className="h-2 w-1/3 bg-blue-600 rounded-full"></div>
         </div>
 
-        {/* Heading */}
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3">
-          Choose how you want to vote today
+          Choose your voting experience
         </h1>
 
         <p className="text-center text-gray-600 max-w-3xl mx-auto">
-          Select the option that best matches your comfort and needs.
+          Select the option that best matches your comfort and support needs.
           You can change this later.
         </p>
+
+        {/* 🔊 VOICE BUTTON — REQUIRED FOR BROWSER */}
+        <button
+          onClick={() => {
+            speak(instructionText);
+            hasSpokenOnce.current = true;
+          }}
+          className="mt-6 mx-auto block px-6 py-3 rounded-full
+                     bg-blue-600 text-white font-medium
+                     focus:outline-none focus:ring-4 focus:ring-blue-300"
+          aria-label="Play voice instructions"
+        >
+          🔊 Play voice instructions
+        </button>
       </section>
 
-      {/* =======================
-          CARD 2: OPTIONS ONLY
-      ======================== */}
+      {/* =========================
+          CARD 2 — OPTIONS
+      ========================== */}
       <section
         className="max-w-7xl mx-auto rounded-3xl
                    bg-blue-50/70 backdrop-blur-sm
@@ -132,17 +177,14 @@ export default function AccessibilityModeSelect() {
                          focus:outline-none focus:ring-4 focus:ring-blue-400
                          transition-transform hover:scale-[1.02]"
             >
-              {/* Background image */}
               <img
                 src={mode.image}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
               />
 
-              {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/45 to-transparent"></div>
 
-              {/* Text */}
               <div className="relative z-10 h-full flex flex-col justify-end p-6 text-left">
                 <h2 className="text-2xl font-bold text-white">
                   {mode.title}
@@ -155,9 +197,8 @@ export default function AccessibilityModeSelect() {
           ))}
         </div>
 
-        {/* Reassurance text */}
-        <p className="mt-10 text-sm text-gray-600 text-center" aria-live="polite">
-          This step helps personalize your voting experience.
+        <p className="mt-10 text-sm text-gray-600 text-center">
+          This step only sets up accessibility preferences.
           No personal data is stored.
         </p>
       </section>
