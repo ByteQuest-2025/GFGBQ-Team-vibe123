@@ -1,49 +1,107 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
-export default function Confirm() {
+export default function ConfirmVote() {
+  const { state } = useLocation();
   const navigate = useNavigate();
+  const candidate = state?.candidate || "Unknown candidate";
+  const recognitionRef = useRef(null);
+
+  /* ================================
+     SPEAK
+  ================================= */
+  const speak = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.9;
+    window.speechSynthesis.speak(u);
+  };
+
+  /* ================================
+     VOICE RECOGNITION
+  ================================= */
+  const startListening = () => {
+    const SR =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+
+    const recognition = new SR();
+    recognition.lang = "en-US";
+    recognition.continuous = true;
+
+    recognition.onresult = (e) => {
+      const text =
+        e.results[e.results.length - 1][0].transcript.toLowerCase();
+
+      if (text.includes("confirm")) {
+        speak("Your vote has been confirmed. Thank you.");
+        recognition.stop();
+        alert("Vote submitted securely.");
+      }
+
+      if (text.includes("back")) {
+        speak("Going back to candidate selection.");
+        recognition.stop();
+        navigate("/vote");
+      }
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+  };
+
+  /* ================================
+     INITIAL READ-BACK
+  ================================= */
+  useEffect(() => {
+    speak(
+      `Step 3 of 3. You selected ${candidate}. ` +
+      "Say confirm vote to submit, or say go back to change."
+    );
+    startListening();
+
+    return () => {
+      if (recognitionRef.current) recognitionRef.current.stop();
+    };
+  }, []);
 
   return (
-  <main className="min-h-screen flex items-center justify-center px-6 page-transition">
-    <div
-      className="w-full max-w-xl rounded-3xl bg-black/40 backdrop-blur-xl
-      border border-white/10 shadow-2xl p-10 text-center"
-      role="status"
-      aria-live="polite"
-    >
-      <h1
-        className="text-4xl font-bold mb-6"
-        tabIndex="0"
-      >
-        ✅ Your vote has been securely recorded
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-100 to-emerald-100
+                    px-6 py-10">
+      <section className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl px-8 py-10 text-center">
+        <p className="text-sm text-gray-600 mb-2">Step 3 of 3</p>
 
-      <p className="text-lg text-gray-300 mb-8">
-        Thank you for participating in an inclusive, secure, and accessible
-        democratic process.
-      </p>
+        <div className="h-2 bg-gray-200 rounded-full mb-8">
+          <div className="h-2 w-full bg-blue-600 rounded-full"></div>
+        </div>
 
-      <div className="text-left bg-black/30 rounded-xl p-6 border border-white/10">
-        <h2 className="text-xl font-semibold mb-4">
-          Accessibility Summary
-        </h2>
-        <ul className="space-y-2 text-gray-300">
-          <li>✔ Keyboard navigation supported</li>
-          <li>✔ Screen reader friendly</li>
-          <li>✔ Large readable text</li>
-          <li>✔ Private and independent voting</li>
-        </ul>
-      </div>
+        <h1 className="text-3xl font-bold mb-6">
+          Confirm your vote
+        </h1>
 
-      <button
-        onClick={() => navigate("/")}
-        className="mt-8 px-8 py-3 rounded-xl text-lg border
-        border-white/20 hover:border-white transition-all
-        focus:ring-4 focus:ring-green-400"
-      >
-        Return to Home
-      </button>
+        <p className="text-xl mb-8">
+          You selected: <strong>{candidate}</strong>
+        </p>
+
+        <div className="flex justify-center gap-6">
+          <button
+            onClick={() => alert("Vote submitted securely")}
+            className="px-8 py-4 rounded-xl bg-green-600 text-white
+                       focus:ring-4 focus:ring-green-300"
+          >
+            Confirm Vote
+          </button>
+
+          <button
+            onClick={() => navigate("/vote")}
+            className="px-8 py-4 rounded-xl bg-gray-300
+                       focus:ring-4 focus:ring-gray-400"
+          >
+            Go Back
+          </button>
+        </div>
+      </section>
     </div>
-  </main>
-);
+  );
 }

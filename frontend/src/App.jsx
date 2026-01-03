@@ -10,6 +10,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AccessibilityModeSelect />} />
           <Route path="/vote" element={<Vote />} />
+          <Route path="/confirm" element={<ConfirmVote />} />
         </Routes>
       </BrowserRouter>
     </AccessibilityProvider>
