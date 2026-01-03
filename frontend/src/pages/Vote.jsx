@@ -1,108 +1,72 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useContext, useEffect, useState } from "react";
+import { AccessibilityContext } from "../context/AccessibilityContext";
+import { speak } from "../hooks/useSpeech";
 
 const candidates = [
   { id: 1, name: "Candidate A" },
   { id: 2, name: "Candidate B" },
-  { id: 3, name: "Candidate C" }
+  { id: 3, name: "Candidate C" },
 ];
 
 export default function Vote() {
+  const { fontSize, contrast, voice } = useContext(AccessibilityContext);
   const [selected, setSelected] = useState(null);
-  const [message, setMessage] = useState("");
-  const [listening, setListening] = useState(false);
-    const navigate = useNavigate();
-    const hasVoted = localStorage.getItem("hasVoted");
 
-
-
-  const castVote = (name) => {
-  const hasVoted = localStorage.getItem("hasVoted");
-
-  if (hasVoted) {
-    alert("You have already voted!");
-    return;
-  }
-
-  localStorage.setItem("hasVoted", "true");
-  setSelected(name);
-
-  setTimeout(() => {
-    navigate("/confirm");
-  }, 800);
-};
-
-const startVoiceVoting = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Voice recognition not supported in this browser");
-      return;
+  useEffect(() => {
+    if (voice) {
+      speak("Please select your candidate. Use tab and enter to vote.");
     }
+  }, [voice]);
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.start();
-    setListening(true);
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.toLowerCase();
-      setListening(false);
-
-      candidates.forEach((c) => {
-        if (transcript.includes(c.name.toLowerCase())) {
-          castVote(c.name);
-        }
-      });
-    };
-
-    recognition.onerror = () => {
-      setListening(false);
-    };
-  };
+  const containerClass = `
+    min-h-screen flex flex-col items-center justify-center gap-6
+    ${contrast === "high" ? "bg-black text-yellow-300" : "bg-white text-black"}
+    ${fontSize === "large" ? "text-2xl" : "text-lg"}
+  `;
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-black via-gray-900 to-black text-white page-transition
-">
-        <div className="w-full max-w-md flex flex-col items-center gap-6">
+    <div className={containerClass}>
+      <h1 className="font-bold text-3xl">
+        Select Your Candidate
+      </h1>
 
-      <h2 className="text-4xl font-bold mb-8 tracking-tight" tabIndex="0">
-        Cast Your Vote
-      </h2>
+      <p className="text-center max-w-xl">
+        You can vote independently. Use keyboard, screen reader, or voice guidance.
+      </p>
 
-      <button
-        onClick={startVoiceVoting}
-        className="mb-8 px-8 py-3 rounded-full border border-green-400/60
-hover:bg-green-500/10 transition-all duration-300
-focus:outline-none focus:ring-4 focus:ring-green-400/50"
-        aria-label="Vote using voice"
-      >
-        🎤 Vote using Voice {listening && "(Listening...)"}
-      </button>
-
-      <div className="flex flex-col items-center gap-5 w-full max-w-lg mx-auto">
-        {candidates.map((c) => (
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        {candidates.map((candidate) => (
           <button
-            key={c.id}
-            onClick={() => castVote(c.name)}
-            className={`w-full min-w-[320px] max-w-lg p-6 rounded-2xl text-xl border 
-transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-400/50
+            key={candidate.id}
+            onClick={() => setSelected(candidate)}
+            onKeyDown={(e) => e.key === "Enter" && setSelected(candidate)}
+            aria-label={`Vote for ${candidate.name}`}
+            className={`p-4 rounded-xl border-2 text-left
+              focus:outline-none focus:ring-4
               ${
-                selected === c.name
-                  ? "bg-green-500 text-black scale-105 shadow-2xl"
-                  : "bg-black/40 border-gray-600 hover:border-white hover:scale-105"
+                selected?.id === candidate.id
+                  ? "border-blue-600 ring-blue-300"
+                  : "border-gray-400"
               }`}
-            aria-label={`Vote for ${c.name}`}
           >
-            {c.name}
+            {candidate.name}
           </button>
         ))}
       </div>
 
-      
-       </div>
-    </main>
+      {selected && (
+        <button
+          className="mt-6 px-8 py-4 bg-green-600 text-white rounded-xl
+                     focus:outline-none focus:ring-4 focus:ring-green-300"
+          aria-label="Confirm selected candidate"
+          onClick={() => {
+            if (voice) speak(`You selected ${selected.name}`);
+            alert(`Vote selected: ${selected.name}`);
+          }}
+        >
+          Confirm Vote
+        </button>
+      )}
+    </div>
   );
 }
