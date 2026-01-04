@@ -186,7 +186,7 @@ No authentication required (hackathon demo scope)
 📷 Screenshots
 
 ### Accessibility Mode Selection
-![Accessibility Mode Selection](screenshots/home-accessibility-select.png)
+![Accessibility Mode Selection](screenshots/home-accessibility-page.png)
 
 ### Low Vision / Blind Voting Mode
 ![Visual Mode](screenshots/vote-visual.png)
