@@ -22,8 +22,8 @@ Traditional digital voting systems often fail to accommodate voters with disabil
 
 🔗 **https://gfgbq-team-vibe123-1.onrender.com**
 
-> The backend is deployed on Render using MongoDB Atlas.  
-> The frontend is currently demonstrated locally and connected to the deployed backend.
+> The complete system—including frontend UI and backend API—is deployed on Render, enabling a fully functional, end-to-end accessible voting experience directly from the browser. 
+
 
 ---
 
@@ -151,13 +151,14 @@ Create a .env file inside backend/:
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/voteable
 ```
-📡 API Endpoints
-Submit Vote
+##📡 API Endpoints
+
+#Submit Vote
 
 ```bash
 POST /api/vote
 ```
-Request Body
+#Request Body
 
 ```bash
 {
@@ -165,7 +166,7 @@ Request Body
 }
 ```
 
-Response
+#Response
 
 ```bash
 {
@@ -173,17 +174,17 @@ Response
   "message": "Vote recorded successfully"
 }
 ```
-🔐 Security & Privacy
+###🔐 Security & Privacy
 
-No personal voter data is collected
+--No personal voter data is collected
 
-Votes are stored anonymously
+--Votes are stored anonymously
 
-MongoDB Atlas used for secure storage
+--MongoDB Atlas used for secure storage
 
-No authentication required (hackathon demo scope)
+--No authentication required (hackathon demo scope)
 
-📷 Screenshots
+##📷 Screenshots
 
 ### Accessibility Mode Selection
 ![Accessibility Mode Selection](screenshots/home-accessibility-page.png)
