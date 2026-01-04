@@ -35,7 +35,7 @@ _To be added_
 
 # 📊 PPT Link
 
-_To be added_
+https://drive.google.com/drive/folders/1d4CNxLION120w1Y6WOTwVF2pTIvH9wNA?usp=sharing
 
 ---
 
@@ -186,7 +186,7 @@ No authentication required (hackathon demo scope)
 📷 Screenshots
 
 ### Accessibility Mode Selection
-![Accessibility Mode Selection](screenshots/home-accessibility-select.png)
+![Accessibility Mode Selection](screenshots/home-accessibility-page.png)
 
 ### Low Vision / Blind Voting Mode
 ![Visual Mode](screenshots/vote-visual.png)
