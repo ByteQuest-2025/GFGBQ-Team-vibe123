@@ -20,7 +20,7 @@ Traditional digital voting systems often fail to accommodate voters with disabil
 
 # 🌐 Deployed Link
 
-🔗 **https://gfgbq-team-vibe123.onrender.com**
+🔗 **https://gfgbq-team-vibe123-1.onrender.com**
 
 > The backend is deployed on Render using MongoDB Atlas.  
 > The frontend is currently demonstrated locally and connected to the deployed backend.
@@ -129,7 +129,7 @@ npm run dev
 
 Frontend runs on:
 
-http://localhost:5173
+https://gfgbq-team-vibe123-1.onrender.com
 
 🔹 Backend Setup
 
@@ -185,4 +185,30 @@ No authentication required (hackathon demo scope)
 
 📷 Screenshots
 
-Add relevant screenshots here to help reviewers understand the UI and flow.
+### Accessibility Mode Selection
+![Accessibility Mode Selection](screenshots/home-accessibility-select.png)
+
+### Low Vision / Blind Voting Mode
+![Visual Mode](screenshots/vote-visual.png)
+
+### Limited Hand Movement Voting Mode
+![Visual Mode](screenshots/vote-motor.png)
+
+### Cognitive / Assisted Voting Mode
+![Cognitive Mode](screenshots/vote-cognitive.png)
+
+### Hearing/Speech Voting Mode
+![Visual Mode](screenshots/vote-hearing.png)
+
+### Senior Citizen Voting Mode
+![Senior Mode](screenshots/vote-senior.png)
+
+### Standard Voting Mode
+![Cognitive Mode](screenshots/vote-standard.png)
+
+### Voting Confirmation
+![Cognitive Mode](screenshots/vote-confirmation-page.png)
+
+### Vote is Confirmed
+![Cognitive Mode](screenshots/vote-confirmed.png)
+
