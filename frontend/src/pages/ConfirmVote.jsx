@@ -31,7 +31,7 @@ export default function ConfirmVote() {
     try {
       speak("Submitting your vote. Please wait.");
 
-      const res = await fetch("http://localhost:5000/api/vote", {
+      const res = await fetch("https://gfgbq-team-vibe123.onrender.com/api/vote", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
