@@ -18,10 +18,12 @@ Traditional digital voting systems often fail to accommodate voters with disabil
 
 ---
 
-# 🌐 Deployed Link (Optional)
+# 🌐 Deployed Link
 
-_Not deployed yet_  
-(Frontend and backend currently run locally for demonstration purposes.)
+🔗 **https://gfgbq-team-vibe123.onrender.com**
+
+> The backend is deployed on Render using MongoDB Atlas.  
+> The frontend is currently demonstrated locally and connected to the deployed backend.
 
 ---
 
@@ -48,37 +50,37 @@ Instead of a single rigid interface, the system dynamically adapts the voting ex
 ## ♿ Accessibility Modes Implemented
 
 ### 1️⃣ Low Vision / Blind Voters
-- Screen reader friendly UI
-- Voice guidance using Speech Synthesis
-- Voice commands using Speech Recognition
-- Click-anywhere interaction support
+- Screen reader friendly UI  
+- Voice guidance using Speech Synthesis  
+- Voice commands using Speech Recognition  
+- Click-anywhere interaction support  
 
 ### 2️⃣ Senior Citizens
-- Large text and buttons
-- Calm color palette
-- Single-page layout (no scrolling)
-- Clear confirmations
+- Large text and buttons  
+- Calm color palette  
+- Single-page layout (no scrolling)  
+- Clear confirmations  
 
 ### 3️⃣ Cognitive / Assisted Mode
-- Step-by-step reassurance
-- Minimal choices per screen
-- Simple language
-- Reduced visual clutter
+- Step-by-step reassurance  
+- Minimal choices per screen  
+- Simple language  
+- Reduced visual clutter  
 
 ### 4️⃣ Hearing or Speech Difficulty
-- Visual-only instructions
-- No audio dependency
-- Strong visual confirmations
+- Visual-only instructions  
+- No audio dependency  
+- Strong visual confirmations  
 
 ### 5️⃣ Limited Hand Movement (Motor)
-- Keyboard-friendly navigation
-- Large selectable cards
-- Minimal interaction required
+- Keyboard-friendly navigation  
+- Large selectable cards  
+- Minimal interaction required  
 
 ### 6️⃣ Standard Voting
-- Clean and modern UI
-- Optional accessibility tools
-- Fast and intuitive voting flow
+- Clean and modern UI  
+- Optional accessibility tools  
+- Fast and intuitive voting flow  
 
 ---
 
@@ -86,7 +88,7 @@ Instead of a single rigid interface, the system dynamically adapts the voting ex
 
 1. **Step 1:** Select Accessibility Mode  
 2. **Step 2:** Choose Candidate  
-3. **Step 3:** Confirm Vote (Voice or Button)
+3. **Step 3:** Confirm Vote (Voice or Button)  
 
 Each step clearly indicates progress and allows users to change their selection if needed.
 
@@ -95,16 +97,16 @@ Each step clearly indicates progress and allows users to change their selection 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React (Vite)
-- React Router
-- Tailwind CSS
-- Web Speech API (Speech Synthesis & Recognition)
+- React (Vite)  
+- React Router  
+- Tailwind CSS  
+- Web Speech API (Speech Synthesis & Recognition)  
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
+- Node.js  
+- Express.js  
+- MongoDB Atlas  
+- Mongoose  
 
 ---
 
@@ -114,52 +116,63 @@ Each step clearly indicates progress and allows users to change their selection 
 ```bash
 git clone <repository-url>
 cd GFGBQ-Team-vibe123
+
+```
+
 Frontend Setup
+
+```bash
 cd frontend
 npm install
 npm run dev
-
+```
 
 Frontend runs on:
 
 http://localhost:5173
 
 🔹 Backend Setup
+
+```bash
 cd backend
 npm install
 npm run dev
-
+```
 
 Backend runs on:
 
-http://localhost:5000
+ https://gfgbq-team-vibe123.onrender.com
 
 🔹 Environment Variables (Backend)
 
 Create a .env file inside backend/:
 
+```bash
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/voteable
-
+```
 📡 API Endpoints
 Submit Vote
+
+```bash
 POST /api/vote
-
-
+```
 Request Body
 
+```bash
 {
   "candidate": "Candidate B"
 }
-
+```
 
 Response
 
+```bash
 {
   "success": true,
   "message": "Vote recorded successfully"
 }
-
+```
 🔐 Security & Privacy
 
 No personal voter data is collected
