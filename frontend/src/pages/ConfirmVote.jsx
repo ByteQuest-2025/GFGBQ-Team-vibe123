@@ -89,6 +89,8 @@ export default function ConfirmVote() {
 
       if (text.includes("confirm")) {
         recognition.stop();
+        speak("Your vote has been successfully confirmed. Thank you");
+        alert("Vote submitted successfully.");
         submitVote();
       }
 
