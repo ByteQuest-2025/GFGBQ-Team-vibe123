@@ -151,14 +151,14 @@ Create a .env file inside backend/:
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/voteable
 ```
-##📡 API Endpoints
+📡 API Endpoints
 
-#Submit Vote
+Submit Vote
 
 ```bash
 POST /api/vote
 ```
-#Request Body
+Request Body
 
 ```bash
 {
@@ -166,7 +166,7 @@ POST /api/vote
 }
 ```
 
-#Response
+Response
 
 ```bash
 {
@@ -174,7 +174,7 @@ POST /api/vote
   "message": "Vote recorded successfully"
 }
 ```
-###🔐 Security & Privacy
+🔐 Security & Privacy
 
 --No personal voter data is collected
 
@@ -184,7 +184,7 @@ POST /api/vote
 
 --No authentication required (hackathon demo scope)
 
-##📷 Screenshots
+📷 Screenshots
 
 ### Accessibility Mode Selection
 ![Accessibility Mode Selection](screenshots/home-accessibility-page.png)
