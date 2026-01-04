@@ -35,7 +35,7 @@ _To be added_
 
 # 📊 PPT Link
 
-_To be added_
+https://drive.google.com/drive/folders/1d4CNxLION120w1Y6WOTwVF2pTIvH9wNA?usp=sharing
 
 ---
 
